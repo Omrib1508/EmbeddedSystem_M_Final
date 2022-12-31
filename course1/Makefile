@@ -31,7 +31,7 @@
 include sources.mk
 
 #Platform Overrides
-PLATFORM = HOST
+TARGET = course1
 
 # General Flags for all platforms
 GEN_FLAGS = -Wall\
@@ -40,21 +40,12 @@ GEN_FLAGS = -Wall\
 	    -O0\
 	    -std=c99
 
-TARGET = c1m2
-
 # Architectures Specific Flags
 ifeq ($(PLATFORM),MSP432)
 	### MPS432 platform
 	CPU = cortex-m4
 	ARCH = armv7e-m
 	
-	SOURCES += ./startup_msp432p401r_gcc.c \
-		   ./system_msp432p401r.c \
-		   ./interrupts_msp432p401r_gcc.c
-
-	INCLUDES+= -I ../include/CMSIS/ \
-		   -I ../include/msp432/
-
 	# Compiler
  	CC = arm-none-eabi-gcc
 	
@@ -78,6 +69,9 @@ ifeq ($(PLATFORM),MSP432)
 
 else
 	### Host platform
+	CPU = x86_64
+	ARCH:=$(shell arch)
+	
 	# Compiler
 	CC = gcc
 	
@@ -89,15 +83,29 @@ else
 	SIZE = size
 endif
 
-# Perprocesssor Files
-PREP = $(SOURCES:.c=.i)
-# Dependancy Files
-DEPS = $(SOURCES:.c=.d)
-# Assembly Files
-ASMS = $(SOURCES:.c=.asm)
-# Object Files
-OBJS = $(SOURCES:.c=.o)
 
+ifeq ($(VERBOSE), TRUE)
+	CFLAGS += -DVERBOSE
+endif
+
+
+ifeq ($(COURSE1), TRUE)
+	CFLAGS += -DCOURSE1
+endif
+
+
+# Perprocesssor Files
+PREP:= $(SOURCES:.c=.i)
+# Dependancy Files
+DEPS:= $(SOURCES:.c=.d)
+# Assembly Files
+ASMS:= $(SOURCES:.c=.asm)
+# Object Files
+OBJS:= $(SOURCES:.c=.o)
+# maps Files
+MAPS:= $(SOURCES:.c=.map)
+# Output Files
+OUTS:= $(SOURCES:.c=.out)
 
 .PHONY: compile-all build clean
 

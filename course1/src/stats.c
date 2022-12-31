@@ -9,11 +9,11 @@
  *
  *****************************************************************************/
 /**
- * @file    stats.c 
- * @brief   This file have functions that can analyze an array of data items 
+ * @file   	stats.c 
+ * @brief  	This file have functions that can analyze an array of data items 
  *          and report analytics
- * @author  Omri Ben-Shahar
- * @date    21.11.22
+ * @author 	Omri Ben-Shahar
+ * @date	December 31, 2022
  *
  */
 
@@ -22,7 +22,6 @@
  * *
  * *	Includes
  * *
-
  *****************************************************************************/
 #include <stdio.h>
 #include "../include/common/stats.h"
@@ -32,7 +31,6 @@
  * *
  * *	Defines
  * *
-
  *****************************************************************************/
 /* Size of the Data Set */
 #define SIZE (40)
@@ -41,7 +39,6 @@
  * *
  * *	Functions
  * *
-
  *****************************************************************************/
 /*void main() 
 {
@@ -55,9 +52,7 @@
 	print_array(test, SIZE);
 	print_statistics(test, SIZE);
 
-}
-*/
-
+}*/
 
 void print_statistics(unsigned char* array, unsigned int size)
 {
@@ -70,11 +65,14 @@ void print_statistics(unsigned char* array, unsigned int size)
 
 void print_array(unsigned char* array, unsigned int size)
 {
-	for (int i = 0; i < size; i++)
-	{
-		printf("%u ", array[i]);
-	}
-	printf("\n");
+	// The function is required to work only if the user defines the "VERBOSE" macro in command line interface.
+	#ifdef VERBOSE	
+		for (int i = 0; i < size; i++)
+		{
+			PRINTF("%u ", array[i]);
+		}
+		PRINTF("\n");
+	#endif
 }
 
 

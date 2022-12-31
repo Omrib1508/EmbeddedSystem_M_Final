@@ -9,14 +9,18 @@
  *
  *****************************************************************************/
 /**
- * @file course1.c 
- * @brief This file is to be used to course 1 final assessment.
- *
- * @author Alex Fosdick
- * @date April 2, 2017
+ * @file	course1.c 
+ * @brief	This file is to be used to course 1 final assessment 
+ * @author	Omri Ben-Shahar
+ * @date	December 31, 2022
  *
  */
 
+/******************************************************************************
+ * *
+ * *	Includes
+ * *
+******************************************************************************/
 #include <stdint.h>
 #include "course1.h"
 #include "platform.h"
@@ -24,140 +28,152 @@
 #include "data.h"
 #include "stats.h"
 
-int8_t test_data1() {
-  uint8_t * ptr;
-  int32_t num = -4096;
-  uint32_t digits;
-  int32_t value;
+/******************************************************************************
+ * *
+ * *	Functions
+ * *
+*****************************************************************************/
+int8_t test_data1() 
+{
+ 	uint8_t * ptr;
+  	int32_t num = -4096;
+  	uint32_t digits;
+  	int32_t value;
 
-  PRINTF("\ntest_data1();\n");
-  ptr = (uint8_t*) reserve_words( DATA_SET_SIZE_W );
+  	PRINTF("\ntest_data1();\n");
+  	ptr = (uint8_t*) reserve_words(DATA_SET_SIZE_W);
 
-  if (! ptr )
-  {
-    return TEST_ERROR;
-  }
+  	if (!ptr)
+  	{
+  		return TEST_ERROR;
+  	}
 
-  digits = my_itoa( num, ptr, BASE_16);   
-  value = my_atoi( ptr, digits, BASE_16);
-  #ifdef VERBOSE
-  PRINTF("  Initial number: %d\n", num);
-  PRINTF("  Final Decimal number: %d\n", value);
-  #endif
-  free_words( (uint32_t*)ptr );
-
-  if ( value != num )
-  {
-    return TEST_ERROR;
-  }
-  return TEST_NO_ERROR;
-}
-
-int8_t test_data2() {
-  uint8_t * ptr;
-  int32_t num = 123456;
-  uint32_t digits;
-  int32_t value;
-
-  PRINTF("test_data2():\n");
-  ptr = (uint8_t*) reserve_words( DATA_SET_SIZE_W );
-
-  if (! ptr )
-  {
-    return TEST_ERROR;
-  }
-
-  digits = my_itoa( num, ptr, BASE_10);
-  value = my_atoi( ptr, digits, BASE_10);
-  #ifdef VERBOSE
-  PRINTF("  Initial Decimal number: %d\n", num);
-  PRINTF("  Final Decimal number: %d\n", value);
-  #endif
-  free_words( (uint32_t*)ptr );
-
-  if ( value != num )
-  {
-    return TEST_ERROR;
-  }
-  return TEST_NO_ERROR;
-}
-
-int8_t test_memmove1() {
-  uint8_t i;
-  int8_t ret = TEST_NO_ERROR;
-  uint8_t * set;
-  uint8_t * ptra;
-  uint8_t * ptrb;
-
-  PRINTF("test_memmove1() - NO OVERLAP\n");
-  set = (uint8_t*) reserve_words( MEM_SET_SIZE_W );
-
-  if (! set ) 
-  {
-    return TEST_ERROR;
-  }
+  	digits = my_itoa(num, ptr, BASE_16);   
+  	value = my_atoi(ptr, digits, BASE_16);
   
-  ptra = &set[0];
-  ptrb = &set[16];
-  
-  /* Initialize the set to test values */
-  for( i = 0; i < MEM_SET_SIZE_B; i++)
-  {
-    set[i] = i;
-  }
+	#ifdef VERBOSE
+  		PRINTF("  Initial number: %d\n", num);
+  		PRINTF("  Final Decimal number: %d\n", value);
+  	#endif
+  	free_words((uint32_t*)ptr);
 
-  print_array(set, MEM_SET_SIZE_B);
-  my_memmove(ptra, ptrb, TEST_MEMMOVE_LENGTH);
-  print_array(set, MEM_SET_SIZE_B);
-
-  for (i = 0; i < TEST_MEMMOVE_LENGTH; i++)
-  {
-    if (set[i + 16] != i)
-    {
-      ret = TEST_ERROR;
-    }
-  }
-
-  free_words( (uint32_t*)set );
-  return ret;
+  	if (value != num)
+  	{
+    	return TEST_ERROR;
+  	}
+  	return TEST_NO_ERROR;
 }
 
-int8_t test_memmove2() {
-  uint8_t i;
-  int8_t ret = TEST_NO_ERROR;
-  uint8_t * set;
-  uint8_t * ptra;
-  uint8_t * ptrb;
 
-  PRINTF("test_memmove2() -OVERLAP END OF SRC BEGINNING OF DST\n");
-  set = (uint8_t*) reserve_words(MEM_SET_SIZE_W);
+int8_t test_data2()
+{
+ 	uint8_t * ptr;
+  	int32_t num = 123456;
+  	uint32_t digits;
+  	int32_t value;
 
-  if (! set )
-  {
-    return TEST_ERROR;
-  }
-  ptra = &set[0];
-  ptrb = &set[8];
+  	PRINTF("test_data2():\n");
+  	ptr = (uint8_t*) reserve_words(DATA_SET_SIZE_W);
 
-  /* Initialize the set to test values */
-  for( i = 0; i < MEM_SET_SIZE_B; i++) {
-    set[i] = i;
-  }
+  	if (!ptr)
+  	{
+    	return TEST_ERROR;
+  	}
 
-  print_array(set, MEM_SET_SIZE_B);
-  my_memmove(ptra, ptrb, TEST_MEMMOVE_LENGTH);
-  print_array(set, MEM_SET_SIZE_B);
+  	digits = my_itoa( num, ptr, BASE_10);
+  	value = my_atoi( ptr, digits, BASE_10);
+  	#ifdef VERBOSE
+  		PRINTF("  Initial Decimal number: %d\n", num);
+  		PRINTF("  Final Decimal number: %d\n", value);
+  	#endif
+  	free_words( (uint32_t*)ptr );
 
-  for (i = 0; i < TEST_MEMMOVE_LENGTH; i++)
-  {
-    if (set[i + 8] != i)
-    {
-      ret = TEST_ERROR;
-    }
-  }
+  	if (value != num)
+  	{
+    	return TEST_ERROR;
+  	}
+  	return TEST_NO_ERROR;
+}
 
-  free_words( (uint32_t*)set );
-  return ret;
+int8_t test_memmove1()
+{
+	uint8_t i;
+ 	int8_t ret = TEST_NO_ERROR;
+  	uint8_t * set;
+  	uint8_t * ptra;
+  	uint8_t * ptrb;
+
+  	PRINTF("test_memmove1() - NO OVERLAP\n");
+  	set = (uint8_t*) reserve_words( MEM_SET_SIZE_W );
+
+  	if (!set) 
+  	{
+    	return TEST_ERROR;
+  	}
+  
+  	ptra = &set[0];
+  	ptrb = &set[16];
+  
+  	/* Initialize the set to test values */
+  	for( i = 0; i < MEM_SET_SIZE_B; i++)
+  	{
+    	set[i] = i;
+  	}
+
+  	print_array(set, MEM_SET_SIZE_B);
+  	my_memmove(ptra, ptrb, TEST_MEMMOVE_LENGTH);
+  	print_array(set, MEM_SET_SIZE_B);
+
+  	for (i = 0; i < TEST_MEMMOVE_LENGTH; i++)
+  	{
+    	if (set[i + 16] != i)
+    	{
+      		ret = TEST_ERROR;
+    	}
+  	}
+
+  	free_words( (uint32_t*)set );
+  	return ret;
+}
+
+int8_t test_memmove2() 
+{
+  	uint8_t i;
+  	int8_t ret = TEST_NO_ERROR;
+	uint8_t * set;
+	uint8_t * ptra;
+	uint8_t * ptrb;
+
+  	PRINTF("test_memmove2() -OVERLAP END OF SRC BEGINNING OF DST\n");
+  	set = (uint8_t*) reserve_words(MEM_SET_SIZE_W);
+
+  	if(!set)
+  	{
+    	return TEST_ERROR;
+  	}
+  	ptra = &set[0];
+  	ptrb = &set[8];
+
+	/* Initialize the set to test values */
+	for( i = 0; i < MEM_SET_SIZE_B; i++) 
+	{
+		set[i] = i;
+	}
+
+	print_array(set, MEM_SET_SIZE_B);
+	my_memmove(ptra, ptrb, TEST_MEMMOVE_LENGTH);
+	print_array(set, MEM_SET_SIZE_B);
+
+	for (i = 0; i < TEST_MEMMOVE_LENGTH; i++)
+	{
+		if (set[i + 8] != i)
+		{
+			ret = TEST_ERROR;
+		}
+	}
+
+	free_words( (uint32_t*)set );
+	return ret;
 }
 
 int8_t test_memmove3() {

@@ -31,48 +31,113 @@
  * *	Functions
  * *
 *****************************************************************************/
-void set_value(char * ptr, unsigned int index, char value){
+void set_value(char * ptr, unsigned int index, char value)
+{
   ptr[index] = value;
 }
 
-void clear_value(char * ptr, unsigned int index){
+
+void clear_value(char * ptr, unsigned int index)
+{
   set_value(ptr, index, 0);
 }
 
-char get_value(char * ptr, unsigned int index){
+
+char get_value(char * ptr, unsigned int index)
+{
   return ptr[index];
 }
 
-void set_all(char * ptr, char value, unsigned int size){
-  unsigned int i;
-  for(i = 0; i < size; i++) {
-    set_value(ptr, i, value);
-  }
+
+void set_all(char * ptr, char value, unsigned int size)
+{
+	unsigned int i;
+	for(i = 0; i < size; i++)
+	{
+    	set_value(ptr, i, value);
+  	}
 }
 
-void clear_all(char * ptr, unsigned int size){
+
+void clear_all(char * ptr, unsigned int size)
+{
   set_all(ptr, 0, size);
 }
 
+
 uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length)
-{}
+{
+	int16_t data[length];
+
+	my_memcopy(src, data, length);
+	my_memcopy(data, dst, length);
+	return dst;
+}
+
 
 uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length)
-{}
+{
+	for (int byte = 0; byte < length; byte++)
+	{
+		*(dst + byte) = *(src + byte);
+	}
+	return dst;
+}
+
 
 uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value)
-{}
+{
+	for (int byte = 0; byte < length; byte++)
+	{
+		*(src + byte) = value;
+	}
+	return src;
+}
+
 
 uint8_t * my_memzero(uint8_t * src, size_t length)
-{}
+{
+	for (int byte = 0; byte < length; byte++)
+	{
+		*(src + byte) = 0;
+	}
+	return src;
+}
+
 
 uint8_t * my_reverse(uint8_t * src, size_t length)
-{}
+{
+	uint8_t middle = length / 2;
+	uint8_t temp;
+
+	for (int byte = 0; byte < middle; byte++)
+	{
+		temp = *(src + byte);
+		*(src + byte) = *(src + length - byte - 1);
+		*(src + length - byte - 1) = temp;	
+	}
+	return src;
+}
+
 
 int32_t * reserve_words(size_t length)
-{}
+{
+	int32_t *mem;
+
+	mem = (*int32_t)malloc(length * sizeof(int32_t));
+	if (!mem)
+	{
+		PRINTF("Memory allocation didn't work!");
+		return NULL;
+	}
+	return mem;
+}
+
 
 void free_words(int32_t * src)
-{}
-
-{}
+{
+	if (src)	
+	{
+		free(src);
+	}
+}

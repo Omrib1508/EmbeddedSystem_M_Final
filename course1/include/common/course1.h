@@ -9,9 +9,8 @@
  *
  *****************************************************************************/
 /**
- * @file	stats.h 
- * @brief 	This file contain all the declaration and explanations on the 
- *        	functions
+ * @file	course1.h 
+ * @brief 	This file is to be used to course 1 final assessment.
  * @author	Omri Ben-Shahar
  * @date  	December 31, 2022
  *
@@ -51,71 +50,86 @@
  * *Function:		course1
  * *Input:	 		None
  * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Description: 	calls some various simple tests
 ******************************************************************************/
 void course1(void);
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_data1
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	function calls the my_itoa and my_atoi functions in Hex
 ******************************************************************************/
 int8_t test_data1();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_data2
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	function calls the my_itoa and my_atoi functions in Dec
 ******************************************************************************/
 int8_t test_data2();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_memmove1
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	This function calls the memmove routine with two sets of 
+ * *				data that do not over lap in anyway. This function should 	
+ * *				print that a move worked correctly for a move from source
+ * *				to destination.
 ******************************************************************************/
 int8_t test_memmove1();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_memmove2
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	This function calls the memmove routine with two sets of 
+ * *				data that not over lap. Overlap exists at the start of the 
+ * *				destination and the end of the source pointers. This 
+ * *				function should print that a move worked correctly for a 
+ * *				move from source to destination regardless of overlap.
 ******************************************************************************/
 int8_t test_memmove2();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_memmove3
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	This function calls the memmove routine with two sets of 
+ * *				data that not over lap. Overlap exists at the start of the 
+ * *				source and the end of the destination pointers. This 
+ * *				function should print that a move worked correctly for a 
+ * *				move from source to destination regardless of overlap.
 ******************************************************************************/
 int8_t test_memmove3();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_memcopy
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	Calls the my_memcopy functions to validate a copy works
+ * *				correctly
 ******************************************************************************/
 int8_t test_memcopy();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_memset
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	Calls the memset and memzero functions. This shoudl zero out
+ * *				the bytes from [] to []. This should set the bytes [] to []
+ * *				with 0xFF
 ******************************************************************************/
 int8_t test_memset();
 
 /******************************************************************************
- * *Function:		course1
+ * *Function:		test_reverse
  * *Input:	 		None
- * *Output:			None
- * *Description: 	This function is need to print all stats
+ * *Output:			error
+ * *Description: 	Calls the my_reverse function to see if a give set of ASCII
+ * *				characters will properly reverse
 ******************************************************************************/
 int8_t test_reverse();
 
