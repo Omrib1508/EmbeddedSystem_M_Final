@@ -65,7 +65,8 @@ ifeq ($(PLATFORM),MSP432)
 			-mfloat-abi=hard \
 			-mfpu=fpv4-sp-d16\
 			--specs=nosys.specs
-	CPPFLAGS = 	-DMSP432 $(INCLUDES)
+	CPPFLAGS = 	-M -MF test.d
+	DEFINEFLAG =	-DMSP432
 
 else
 	### Host platform
@@ -76,11 +77,12 @@ else
 	CC = gcc
 	
 	# Compiler flags
-	CFLAGS =	 $(GEN_FLAGS)
-	CPPFLAGS =	 -DHOST $(INCLUDES)
-	
+	CFLAGS =	$(GEN_FLAGS)
+	CPPFLAGS = 	-M -MF test2.d
+	DEFINEFLAG =	-DHOST
 	# Linker
 	SIZE = size
+	LDFLAGS =	-Wl, -Map=$(TARGET).map
 endif
 
 
@@ -96,8 +98,6 @@ endif
 
 # Perprocesssor Files
 PREP:= $(SOURCES:.c=.i)
-# Dependancy Files
-DEPS:= $(SOURCES:.c=.d)
 # Assembly Files
 ASMS:= $(SOURCES:.c=.asm)
 # Object Files
@@ -107,36 +107,66 @@ MAPS:= $(SOURCES:.c=.map)
 # Output Files
 OUTS:= $(SOURCES:.c=.out)
 
-.PHONY: compile-all build clean
+#------------------------------------------------------------------------------#
+# #Target: <file>.i
+# # Prerequisites: the .c file
+# # Output: the .d as well as .i files
+#------------------------------------------------------------------------------#
+%.i : %.c
+	$(CC) $(CPPFLAGs) $(DEFINEFLAG) $<
+	$(CC) $(DEFINEFLAG) -E -o $@ $<
+#$(CC) $(CPPFLAGs) -E -o $@ $< 
+### -E: Stop after the preprocessing stage;
+### do not run the compiler proper. The output is in the form of preprocessed source code, which is sent to the standard output. 
 
-# Compile all object files and link to executalbe
-build: $(TARGET).out
+#------------------------------------------------------------------------------#
+# # Target: <file>.asm
+# # Prerequisites: the .c file
+# # Output: the .asm file whether from the .c file or the object file
+#------------------------------------------------------------------------------#
 
-$(TARGET).out: 	$(OBJS)
-		$(CC) $(OBJS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@
-		$(SIZE) $@
+%.asm : %.c
+	$(CC) $(DEFINEFLAG) $(CFLAGS) -S $<
+	objdump $(OBJS) -D
+### -S: Stop after the stage of compilation proper; do not assemble.
+###The output is in the form of an assembler code file for each non-assembler input file specified. 
 
-# Generate perproccesor output files
-%.i: %.c
-	$(CC) -E $< $(CFLAGS) $(CPPFLAGS) -o $@
+#------------------------------------------------------------------------------#
+# # Target: <file>.o
+# # Prerequisites: the .c file
+# # Output: the .o file corresponding to the provided .c file
+#------------------------------------------------------------------------------#
+%.o : %.c
+	$(CC) $(DEFINEFLAG) $(CFLAGS) -c $<
 
-# Generate assemly files and executable
-%.asm: %.c
-	$(CC) -S $< $(CFLAGS) $(CPPFLAGS) -o $@
+#------------------------------------------------------------------------------#
+# # Target: compile-all
+# # Prerequisites: the source files
+# # Output: all source files are compiled but without linking and their corresponding .o files are generated
+#-------------------------------------------------------------------------------#
+.PHONY: compile-all
+compile-all: $(SOURCES)
+#$(OBJS): $(SOURCES)
+	$(CC) $(DEFINEFLAG) $(CFLAGS) -c $(SOURCES) -lm
 
-# Generate object files and executalbe
-%.o: %.c
-	$(CC) -c $< $(CFLAGS) $(CPPFLAGS) -o $@
+#--------------------------------------------------------------------------------#
+# # Target: build
+# # Prerequisites: the main.out file
+# # Output: the final executable file after linking and a brief report regarding the application size
+#--------------------------------------------------------------------------------#
+.PHONY: build
+build: $(OUTS)
+#main.out
+$(OUTS): $(SOURCES)
+	$(CC) $(DEFINEFLAG) $(CFLAGS) $(LDFLAGS) -o course1.out $^ -lm
+	size -Atd course1.out
 
-# Generate dependancy fukes for each source file
-%.d: %.c
-	$(CC) -E -M $< $(CPPFLAGS) -o $@
-
-# Compile all object files, do not link them
-compile-all: $(OBJS)
-
-# Remove all compile objects, preprocessed outputs, assembly files and exectuable files.
+#---------------------------------------------------------------------------------#
+# # Target: clean
+# # Prerequisites: None
+# # Output: all generated file are removed and the directory is cleaned for a new build
+#---------------------------------------------------------------------------------#
+.PHONY: clean
 clean:
-	@echo Removing all built files
-	rm -f *.out *.map *.o *.asm *.i
-
+#rm -f $(OBJS) main.out $(ASMS) $(PPS) $(MAPS)
+	rm -f *.i *.d *.map *.s *.out *.o

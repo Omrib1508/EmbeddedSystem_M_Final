@@ -14,9 +14,9 @@ ifeq ($(PLATFORM), MSP432)
 	SOURCES =	/src/*.c
 	 	
 	# Add your include paths to this variable
-	INCLUDES = 	../include/CMSIS\
-			../include/commom\
-			../include/msp432
+	INCLUDES = 	include/CMSIS\
+			include/commom\
+			include/msp432
 
 else
 	# Add your Source files to this variable
@@ -27,5 +27,5 @@ else
 			src/course1.c
 			
 	# Add your include paths to this variable
-	INCLUDES =     ../include/common/
+	INCLUDES =     include/common/
 endif
