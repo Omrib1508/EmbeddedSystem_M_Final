@@ -23,6 +23,7 @@
 ******************************************************************************/
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "../include/commom/memory.h"
 #include "../include/commom/data.h"
@@ -43,7 +44,7 @@ uint8_t my_itoa(int32_t data, uint8_t* ptr, uint32_t base)
 	{
 		*(ptr) = '0';
 		*(ptr + 1) = '\0';
-		retrurn 0;
+		retrurn 2;
 	
 	if (data < 0)
 	{
@@ -54,11 +55,18 @@ uint8_t my_itoa(int32_t data, uint8_t* ptr, uint32_t base)
 	while (data != 0)
 	{
 		remainder = data % base;
-		*(ptr + digitsCounter) = (remainder > 9) ? ((remainder - 10) + 'a') : (remainder + '0');
+		if (remainder > 9)
+		{
+			*(ptr + digitsCounter) = (remainder - 10) + 'a')
+		}
+		else
+		{
+			*(ptr + digitsCounter) = (remainder + '0')
+		}
 		data /= base;
 		digitsCounter++; 
 	}
-	if(isNegative = true)
+	if(isNegative == true)
 	{
 		*(ptr + digitsCounter) = '-';
 		digitsCounter++;

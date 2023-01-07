@@ -8,24 +8,30 @@
 # misuse of this material. 
 #
 #*****************************************************************************
+#**
+# @file   source.mk
+# @brief  include all the files for the Makefile
+# @author Omri Ben-Shahar
+# @date   31.12.22
+
 
 ifeq ($(PLATFORM), MSP432)
 	# Add your Source files to this variable
 	SOURCES =	/src/*.c
 	 	
 	# Add your include paths to this variable
-	INCLUDES = 	include/CMSIS\
-			include/commom\
-			include/msp432
+	INCLUDES = 	../include/CMSIS\
+				../include/commom\
+				../include/msp432
 
 else
 	# Add your Source files to this variable
-	SOURCES =       src/main.c\
-			src/memory.c\
-			src/data.c\
-			src/stats.c\
-			src/course1.c
+	SOURCES =   src/main.c\
+				src/memory.c\
+				src/data.c\
+				src/stats.c\
+				src/course1.c
 			
 	# Add your include paths to this variable
-	INCLUDES =     include/common/
+	INCLUDES =     ../include/common/
 endif

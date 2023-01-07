@@ -8,6 +8,12 @@
 # misuse of this material. 
 #
 #*****************************************************************************
+#**
+# @file    Makefile
+# @brief   This file is resposable on the preprossecsor compilation rules
+# @author  Omri Ben-Shahar
+# @date    31.12.22
+
 
 #------------------------------------------------------------------------------
 # This is the second assessment in the course, it's a makefile to automate the build process
@@ -34,11 +40,10 @@ include sources.mk
 TARGET = course1
 
 # General Flags for all platforms
-GEN_FLAGS = -Wall\
-	    -Werror\
-	    -g\
-	    -O0\
-	    -std=c99
+GEN_FLAGS = 		-Wall\
+			-g\
+			-O0\
+			-std=c99
 
 # Architectures Specific Flags
 ifeq ($(PLATFORM),MSP432)
@@ -54,9 +59,9 @@ ifeq ($(PLATFORM),MSP432)
 	SIZE = arm-none-eabi-size
 	
 	# Linker Flags
-	LINKER_FILE 	= ../msp432p401r.lds
+	LINKER_FILE 	= -T msp432p401r.lds
 	LDFLAGS 	= -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
-	
+	SPECS 		= nosys.specs
 	# Compiler Flags
 	CFLAGS = 	$(GEN_FLAGS) \
 			-mcpu=$(CPU) \
@@ -64,7 +69,7 @@ ifeq ($(PLATFORM),MSP432)
 			-march=$(ARCH) \
 			-mfloat-abi=hard \
 			-mfpu=fpv4-sp-d16\
-			--specs=nosys.specs
+			--specs=$(SPECS)
 	CPPFLAGS = 	-M -MF test.d
 	DEFINEFLAG =	-DMSP432
 
@@ -76,13 +81,17 @@ else
 	# Compiler
 	CC = gcc
 	
+	# Linker
+	SIZE = size
+	
+	# Linker
+	LDFLAGS =	-Wl, -Map=$(TARGET).map
+	
 	# Compiler flags
 	CFLAGS =	$(GEN_FLAGS)
 	CPPFLAGS = 	-M -MF test2.d
 	DEFINEFLAG =	-DHOST
-	# Linker
-	SIZE = size
-	LDFLAGS =	-Wl, -Map=$(TARGET).map
+	
 endif
 
 
@@ -99,7 +108,7 @@ endif
 # Perprocesssor Files
 PREP:= $(SOURCES:.c=.i)
 # Assembly Files
-ASMS:= $(SOURCES:.c=.asm)
+ASMS:= $(SOURCES:.c=.s)
 # Object Files
 OBJS:= $(SOURCES:.c=.o)
 # maps Files
