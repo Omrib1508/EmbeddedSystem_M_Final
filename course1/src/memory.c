@@ -24,7 +24,7 @@
  * *	Includes
  * *
 ******************************************************************************/
-#include "memory.h"
+#include "../include/common/memory.h"
 #include <stdlib.h>
 #include <stdint.h>
 /******************************************************************************
@@ -68,11 +68,25 @@ void clear_all(char * ptr, unsigned int size)
 
 uint8_t* my_memmove(uint8_t *src, uint8_t *dst, size_t length)
 {
-	int16_t data[length];
+	uint8_t source[length];
+  	uint8_t *srccpy = source;
 
-	my_memcopy(src, data, length);
-	my_memcopy(data, dst, length);
-	return dst;
+  	for (int i = 0; i < length; i++) 
+	{
+   		*srccpy = *src;
+    	src++;
+    	srccpy++;
+  	}
+  
+	srccpy = source;
+
+  	for (int j = 0; j < length; j++) 
+	{
+    	*dst = *srccpy;
+    	dst++;
+    	srccpy++;
+  	}
+ 	return ((uint8_t *) dst - length);
 }
 
 
@@ -82,7 +96,7 @@ uint8_t* my_memcopy(uint8_t *src, uint8_t *dst, size_t length)
 	{
 		*(dst + byte) = *(src + byte);
 	}
-	return dst;
+	return (uint8_t *)dst;
 }
 
 
@@ -92,7 +106,7 @@ uint8_t* my_memset(uint8_t *src, size_t length, uint8_t value)
 	{
 		*(src + byte) = value;
 	}
-	return src;
+	return (uint8_t *)src;
 }
 
 
@@ -102,7 +116,7 @@ uint8_t* my_memzero(uint8_t *src, size_t length)
 	{
 		*(src + byte) = 0;
 	}
-	return src;
+	return (uint8_t *)src;
 }
 
 
@@ -117,7 +131,7 @@ uint8_t* my_reverse(uint8_t *src, size_t length)
 		*(src + byte) = *(src + length - byte - 1);
 		*(src + length - byte - 1) = temp;	
 	}
-	return src;
+	return (uint8_t *)src;
 }
 
 
@@ -125,20 +139,16 @@ int32_t* reserve_words(size_t length)
 {
 	int32_t *mem;
 
-	mem = (*int32_t)malloc(length * sizeof(int32_t));
+	mem = (int32_t*)malloc(length * sizeof(int32_t));
 	if (!mem)
 	{
-		PRINTF("Memory allocation didn't work!");
 		return NULL;
 	}
-	return mem;
+	return (int32_t *)mem;
 }
 
 
 void free_words(int32_t *src)
 {
-	if (src)	
-	{
-		free(src);
-	}
+	free(src);
 }

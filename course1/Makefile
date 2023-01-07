@@ -60,7 +60,7 @@ ifeq ($(PLATFORM),MSP432)
 	
 	# Linker Flags
 	LINKER_FILE 	= -T msp432p401r.lds
-	LDFLAGS 	= -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
+	#LDFLAGS 	= -Wl,-Map=$(TARGET).map -T $(LINKER_FILE)
 	SPECS 		= nosys.specs
 	# Compiler Flags
 	CFLAGS = 	$(GEN_FLAGS) \
@@ -85,7 +85,6 @@ else
 	SIZE = size
 	
 	# Linker
-	LDFLAGS =	-Wl, -Map=$(TARGET).map
 	
 	# Compiler flags
 	CFLAGS =	$(GEN_FLAGS)
